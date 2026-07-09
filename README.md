@@ -143,4 +143,4 @@ public IP CLI, public IP shell script, OpenWrt public IP, Termux public IP, Linu
 
 ## License
 
-No license file is included yet. Add a license before accepting outside contributions.
+BSD 3-Clause. See [LICENSE](LICENSE).
