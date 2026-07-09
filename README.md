@@ -1,47 +1,86 @@
-# myip by BlackF1re
+# myip
 
-Portable shell utility for checking public IP and basic geolocation info.
+`myip` is a portable POSIX shell utility for showing your public IP address and basic network/geolocation information from the terminal.
+
+It is designed for Linux, OpenWrt, Termux, WSL, macOS, servers, routers, and small shell scripts where you need a fast `myip`, `myip --ip`, or `myip --json` command.
 
 ## Features
 
-- POSIX `sh` script
-- `curl` first, `wget` fallback
+- POSIX `sh`, no Bash requirement
+- Uses `curl` first and falls back to `wget`
 - `ipapi.co` primary backend with `2ip.me` fallback
-- Self-install into a user `bin` directory
+- Self-installs to a user `bin` directory on first run
 - Auto-update on startup from GitHub by default
-- Safe manual updates with syntax and version checks
-- Colored output for IP and country
+- Manual `--update` command with syntax and version checks
+- Clean stdout for `--ip` and `--json`, suitable for scripts
+
+## Install by copy-paste
+
+```sh
+cd /tmp
+curl -fsSLO https://raw.githubusercontent.com/BlackF1re/myip/master/myip || wget -O myip https://raw.githubusercontent.com/BlackF1re/myip/master/myip
+chmod +x ./myip
+./myip
+```
+
+After first run, the script tries to install itself to one of these locations:
+
+```text
+$PREFIX/bin
+~/.local/bin
+~/bin
+/usr/local/bin
+```
+
+Then use:
+
+```sh
+myip
+```
+
+## Install on OpenWrt
+
+```sh
+opkg update
+opkg install curl ca-bundle || opkg install wget-ssl ca-bundle
+cd /tmp
+curl -fsSLO https://raw.githubusercontent.com/BlackF1re/myip/master/myip || wget -O myip https://raw.githubusercontent.com/BlackF1re/myip/master/myip
+chmod +x ./myip
+./myip
+```
+
+## Install on Termux
+
+```sh
+pkg update
+pkg install curl
+cd $HOME
+curl -fsSLO https://raw.githubusercontent.com/BlackF1re/myip/master/myip
+chmod +x ./myip
+./myip
+```
 
 ## Usage
 
 ```sh
-chmod +x ./myip
-./myip
-./myip --ip
-./myip --json
-./myip --version
-./myip --remove
-./myip --update
+myip
+myip --ip
+myip --json
+myip --version
+myip --update
+myip --remove
 ```
 
-## Install behavior
+Examples:
 
-Run the script from any directory. On first launch it will try to copy itself to:
+```sh
+PUBLIC_IP="$(myip --ip)"
+echo "Current public IP: $PUBLIC_IP"
 
-- `$PREFIX/bin` on Termux-like systems
-- `~/.local/bin`
-- `~/bin`
-- `/usr/local/bin` if writable
-
-It updates older installed copies, refuses to overwrite newer ones, and can report:
-
-```text
-myip successfully updated from OLD_VERSION to CURRENT_VERSION
+myip --json > ip-info.json
 ```
 
-For `--ip` and `--json`, install and update service messages go to stderr so stdout stays usable in scripts.
-
-## GitHub updates
+## Auto-update
 
 By default, installed copies check this raw script on startup:
 
@@ -49,19 +88,59 @@ By default, installed copies check this raw script on startup:
 https://raw.githubusercontent.com/BlackF1re/myip/master/myip
 ```
 
-If a different valid copy is downloaded, `myip` checks shell syntax, compares versions, replaces the running file, and re-executes the original command.
-
-Manual update:
-
-```sh
-myip --update
-```
-
-Configuration knobs:
+Disable auto-update for one run:
 
 ```sh
 MYIP_AUTO_UPDATE=0 myip
+```
+
+Check at most once per hour:
+
+```sh
 MYIP_AUTO_UPDATE_INTERVAL=3600 myip
-MYIP_GITHUB_REPO=owner/repo MYIP_GITHUB_BRANCH=branch myip
+```
+
+Use another repository or branch:
+
+```sh
+MYIP_GITHUB_REPO=owner/repo MYIP_GITHUB_BRANCH=main myip
+```
+
+Use a full custom raw URL:
+
+```sh
 MYIP_AUTO_UPDATE_URL=https://example.com/myip myip
 ```
+
+## Troubleshooting
+
+No downloader:
+
+```sh
+command -v curl || command -v wget
+```
+
+OpenWrt TLS/certificate issues:
+
+```sh
+opkg update
+opkg install ca-bundle curl
+```
+
+Remove installation and config:
+
+```sh
+myip --remove
+```
+
+## SEO keywords
+
+public IP CLI, public IP shell script, OpenWrt public IP, Termux public IP, Linux public IP, POSIX sh IP checker, geolocation CLI, IP JSON CLI, router IP tool, shell network utility.
+
+## Suggested GitHub topics
+
+`public-ip`, `ip-address`, `cli`, `shell`, `posix-sh`, `openwrt`, `termux`, `linux`, `router`, `network`, `geolocation`, `curl`, `wget`
+
+## License
+
+No license file is included yet. Add a license before accepting outside contributions.
