@@ -8,7 +8,8 @@ Portable shell utility for checking public IP and basic geolocation info.
 - `curl` first, `wget` fallback
 - `ipapi.co` primary backend with `2ip.me` fallback
 - Self-install into a user `bin` directory
-- Safe in-place updates with version checks
+- Auto-update on startup from GitHub by default
+- Safe manual updates with syntax and version checks
 - Colored output for IP and country
 
 ## Usage
@@ -20,7 +21,7 @@ chmod +x ./myip
 ./myip --json
 ./myip --version
 ./myip --remove
-MYIP_GITHUB_REPO=owner/repo ./myip --update
+./myip --update
 ```
 
 ## Install behavior
@@ -38,15 +39,29 @@ It updates older installed copies, refuses to overwrite newer ones, and can repo
 myip successfully updated from OLD_VERSION to CURRENT_VERSION
 ```
 
+For `--ip` and `--json`, install and update service messages go to stderr so stdout stays usable in scripts.
+
 ## GitHub updates
 
-When your repository exists, set:
+By default, installed copies check this raw script on startup:
 
-```sh
-export MYIP_GITHUB_REPO=owner/repo
+```text
+https://raw.githubusercontent.com/BlackF1re/myip/master/myip
 ```
 
-After that:
+If a different valid copy is downloaded, `myip` checks shell syntax, compares versions, replaces the running file, and re-executes the original command.
 
-- `myip`, `myip --ip`, `myip --json`, and `myip --version` can show an update notice
-- `myip --update` downloads the latest `myip` from `main`
+Manual update:
+
+```sh
+myip --update
+```
+
+Configuration knobs:
+
+```sh
+MYIP_AUTO_UPDATE=0 myip
+MYIP_AUTO_UPDATE_INTERVAL=3600 myip
+MYIP_GITHUB_REPO=owner/repo MYIP_GITHUB_BRANCH=branch myip
+MYIP_AUTO_UPDATE_URL=https://example.com/myip myip
+```
