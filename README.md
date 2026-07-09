@@ -133,14 +133,6 @@ Remove installation and config:
 myip --remove
 ```
 
-## SEO keywords
-
-public IP CLI, public IP shell script, OpenWrt public IP, Termux public IP, Linux public IP, POSIX sh IP checker, geolocation CLI, IP JSON CLI, router IP tool, shell network utility.
-
-## Suggested GitHub topics
-
-`public-ip`, `ip-address`, `cli`, `shell`, `posix-sh`, `openwrt`, `termux`, `linux`, `router`, `network`, `geolocation`, `curl`, `wget`
-
 ## License
 
 BSD 3-Clause. See [LICENSE](LICENSE).
